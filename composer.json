@@ -1,0 +1,23 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Theater\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "ddurov",
+      "email": "admin@ddproj.ru"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/ddurov/ddProjects-core",
+      "no-api": true
+    }
+  ],
+  "require": {
+    "ddprojects/core": "dev-main"
+  }
+}
