@@ -38,7 +38,7 @@ class OrderController extends Controller
 			"ticketAdultQuantity" => "required|numeric",
 			"ticketKidPrice" => "required|numeric",
 			"ticketKidQuantity" => "required|numeric",
-			"barcode" => "required|numeric|max:".(int)getenv("MAX_BARCODES_FOR_EACH_EVENT"),
+			"barcode" => "required|numeric",
 		]);
 
 		$this->orderService->book(
@@ -48,15 +48,25 @@ class OrderController extends Controller
 			$this->data["ticketAdultQuantity"],
 			$this->data["ticketKidPrice"],
 			$this->data["ticketKidQuantity"],
-			1,
 			$this->data["barcode"]
 		);
 
 		parent::sendResponse(new SuccessResponse("Order successfully booked."));
 	}
 
-	public function approve(): void
+	/**
+	 * @return void
+	 * @throws ParametersException
+	 * @throws EntityException
+	 */
+	#[NoReturn] public function approve(): void
 	{
+		parent::validateData($this->data, [
+			"barcode" => "required|numeric",
+		]);
 
+		$this->orderService->approve($this->data["barcode"]);
+
+		parent::sendResponse(new SuccessResponse("Order successfully booked."));
 	}
 }

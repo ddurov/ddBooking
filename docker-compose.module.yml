@@ -13,7 +13,7 @@ services:
       - ./service/default.conf.template:/etc/nginx/templates/default.conf.template:ro
       - ./service/certs/:/etc/nginx/ssl/:ro
   app:
-    image: ddprojects/theater
+    image: ddprojects/booking
     hostname: api
     links:
       - db

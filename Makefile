@@ -1,8 +1,8 @@
 build:
-	docker build -t ddprojects/theater .
+	docker build -t ddprojects/booking .
 
 start: build
-	docker compose -f docker-compose.standalone.yml -p theater --env-file .env up --build -d
+	docker compose -f docker-compose.standalone.yml -p booking --env-file .env up --build -d
 
 stop:
-	docker compose -f docker-compose.standalone.yml -p theater --env-file .env down
+	docker compose -f docker-compose.standalone.yml -p booking --env-file .env down

@@ -18,7 +18,7 @@ $router->setNamespace("\Theater");
 try {
 
 	$router->all("/", function () {
-		echo "API for ddTheater";
+		echo "API for ddBooking";
 	});
 
 	$router->post("/book", "OrderController@book");

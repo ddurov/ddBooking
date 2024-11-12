@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping\Table;
 class OrderModel extends Model
 {
 	#[Column] public int $eventId;
-	#[Column] public int $userId;
 	#[Column] public string $eventDate;
 	#[Column] public string $createdDate;
 	#[Column] public int $ticketAdultPrice;
@@ -20,11 +19,10 @@ class OrderModel extends Model
 	#[Column] public int $ticketChildrenPrice;
 	#[Column] public int $ticketChildrenQuantity;
 	#[Column] public int $equalPrice;
-	#[Column] public int $barCode;
+	#[Column] public int $barcode;
 
 	/**
 	 * @param int $eventId
-	 * @param int $userId
 	 * @param string $eventDate
 	 * @param string $createdDate
 	 * @param int $ticketAdultPrice
@@ -32,12 +30,11 @@ class OrderModel extends Model
 	 * @param int $ticketChildrenPrice
 	 * @param int $ticketChildrenQuantity
 	 * @param int $equalPrice
-	 * @param int $barCode
+	 * @param int $barcode
 	 */
-	public function __construct(int $eventId, int $userId, string $eventDate, string $createdDate, int $ticketAdultPrice, int $ticketAdultQuantity, int $ticketChildrenPrice, int $ticketChildrenQuantity, int $equalPrice, int $barCode)
+	public function __construct(int $eventId, string $eventDate, string $createdDate, int $ticketAdultPrice, int $ticketAdultQuantity, int $ticketChildrenPrice, int $ticketChildrenQuantity, int $equalPrice, int $barcode)
 	{
 		$this->eventId = $eventId;
-		$this->userId = $userId;
 		$this->eventDate = $eventDate;
 		$this->createdDate = $createdDate;
 		$this->ticketAdultPrice = $ticketAdultPrice;
@@ -45,6 +42,6 @@ class OrderModel extends Model
 		$this->ticketChildrenPrice = $ticketChildrenPrice;
 		$this->ticketChildrenQuantity = $ticketChildrenQuantity;
 		$this->equalPrice = $equalPrice;
-		$this->barCode = $barCode;
+		$this->barcode = $barcode;
 	}
 }
