@@ -4,7 +4,7 @@ services:
       file: docker-compose.module.yml
       service: web
     env_file:
-      - .env.nginx
+      - .env
     volumes:
       - ./service/nginx.conf:/etc/nginx/nginx.conf:ro
   app:
