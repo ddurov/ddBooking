@@ -6,7 +6,6 @@ use Core\Exceptions\EntityException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\OptimisticLockException;
 
 class OrderService
 {
@@ -22,11 +21,9 @@ class OrderService
 	/**
 	 * @param int $eventId
 	 * @param string $eventDate
-	 * @param int $ticketAdultPrice
-	 * @param int $ticketAdultQuantity
-	 * @param int $ticketKidPrice
-	 * @param int $ticketKidQuantity
-	 * @param int $barcode
+	 * @param array $ticketsPrices
+	 * @param array $ticketsQuantities
+	 * @param array $barcode
 	 * @return void
 	 * @throws EntityException
 	 * @throws ORMException
@@ -34,65 +31,75 @@ class OrderService
 	public function book(
 		int $eventId,
 		string $eventDate,
-		int $ticketAdultPrice,
-		int $ticketAdultQuantity,
-		int $ticketKidPrice,
-		int $ticketKidQuantity,
-		int $barcode
+		array $ticketsPrices,
+		array $ticketsQuantities,
+		array $barcode
 	): void
 	{
-		if ($this->entityRepository->findOneBy(["barcode" => $barcode]) !== null) {
-			throw new EntityException("Barcode already exists, try another.", 422);
+		$query = $this->entityRepository->createQueryBuilder("o");
+
+		foreach ($barcode as $key => $item) {
+			$query->orWhere("o.barcode LIKE :barcode_$key")->setParameter("barcode_$key", "%|$item|%");
 		}
+
+		if ($query->getQuery()->getResult() !== [])
+			throw new EntityException("Barcode already exists, try another.", 422);
+
 		$this->create(
 			$eventId,
 			$eventDate,
-			$ticketAdultPrice, $ticketAdultQuantity,
-			$ticketKidPrice, $ticketKidQuantity,
+			$ticketsPrices, $ticketsQuantities,
 			$barcode
 		);
 	}
 
 	/**
+	 * @param int $barcode
+	 * @return void
 	 * @throws EntityException
 	 */
 	public function approve(int $barcode): void
 	{
-		if ($this->entityRepository->findOneBy(["barcode" => $barcode]) === null) {
-			throw new EntityException("Barcode not found.", 422);
-		}
+		if ($this->entityRepository
+			->createQueryBuilder("o")
+			->where("o.barcode LIKE :barcode")
+			->setParameter("barcode", "%|$barcode|%")
+			->getQuery()->getResult() === []
+		) throw new EntityException("Barcode not found.", 422);
 	}
 
 	/**
 	 * @param int $eventId
 	 * @param string $eventDate
-	 * @param int $ticketAdultPrice
-	 * @param int $ticketAdultQuantity
-	 * @param int $ticketKidPrice
-	 * @param int $ticketKidQuantity
-	 * @param int|null $barcode
+	 * @param array $ticketsPrices
+	 * @param array $ticketsQuantities
+	 * @param array|null $barcode
 	 * @return void
 	 * @throws ORMException
-	 * @throws OptimisticLockException
 	 */
 	private function create(
 		int $eventId,
 		string $eventDate,
-		int $ticketAdultPrice,
-		int $ticketAdultQuantity,
-		int $ticketKidPrice,
-		int $ticketKidQuantity,
-		int $barcode = null,
+		array $ticketsPrices,
+		array $ticketsQuantities,
+		array $barcode = null,
 	): void
 	{
-		$barcode ??= rand(1, PHP_INT_MAX);
+		$total = 0;
+		foreach ($ticketsQuantities as $type => $quantity) {
+			if ($barcode === null) {
+				for ($i = 0; $i < $quantity; $i++) {
+					$barcode[] = rand(1, PHP_INT_MAX);
+				}
+			}
+			$total += $ticketsPrices[$type] * $quantity;
+		}
 		$this->entityManager->persist(new OrderModel(
 			$eventId,
 			$eventDate, date("Y-m-d H:i:s"),
-			$ticketAdultPrice, $ticketAdultQuantity,
-			$ticketKidPrice, $ticketKidQuantity,
-			($ticketAdultPrice * $ticketAdultQuantity) + ($ticketKidPrice * $ticketKidQuantity),
-			$barcode
+			$ticketsPrices, $ticketsQuantities,
+			$total,
+			"|".implode("|", $barcode)."|"
 		));
 		$this->entityManager->flush();
 	}
