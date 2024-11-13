@@ -14,33 +14,27 @@ class OrderModel extends Model
 	#[Column] public int $eventId;
 	#[Column] public string $eventDate;
 	#[Column] public string $createdDate;
-	#[Column] public int $ticketAdultPrice;
-	#[Column] public int $ticketAdultQuantity;
-	#[Column] public int $ticketChildrenPrice;
-	#[Column] public int $ticketChildrenQuantity;
+	#[Column] public array $ticketsPrices;
+	#[Column] public array $ticketsQuantities;
 	#[Column] public int $equalPrice;
-	#[Column] public int $barcode;
+	#[Column] public string $barcode;
 
 	/**
 	 * @param int $eventId
 	 * @param string $eventDate
 	 * @param string $createdDate
-	 * @param int $ticketAdultPrice
-	 * @param int $ticketAdultQuantity
-	 * @param int $ticketChildrenPrice
-	 * @param int $ticketChildrenQuantity
+	 * @param array $ticketsPrices
+	 * @param array $ticketsQuantities
 	 * @param int $equalPrice
-	 * @param int $barcode
+	 * @param string $barcode
 	 */
-	public function __construct(int $eventId, string $eventDate, string $createdDate, int $ticketAdultPrice, int $ticketAdultQuantity, int $ticketChildrenPrice, int $ticketChildrenQuantity, int $equalPrice, int $barcode)
+	public function __construct(int $eventId, string $eventDate, string $createdDate, array $ticketsPrices, array $ticketsQuantities, int $equalPrice, string $barcode)
 	{
 		$this->eventId = $eventId;
 		$this->eventDate = $eventDate;
 		$this->createdDate = $createdDate;
-		$this->ticketAdultPrice = $ticketAdultPrice;
-		$this->ticketAdultQuantity = $ticketAdultQuantity;
-		$this->ticketChildrenPrice = $ticketChildrenPrice;
-		$this->ticketChildrenQuantity = $ticketChildrenQuantity;
+		$this->ticketsPrices = $ticketsPrices;
+		$this->ticketsQuantities = $ticketsQuantities;
 		$this->equalPrice = $equalPrice;
 		$this->barcode = $barcode;
 	}
