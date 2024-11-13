@@ -23,7 +23,7 @@ try {
 
 	$router->post("/book", "OrderController@book");
 
-	$router->post("/approve", "OrderController@approve");
+	$router->get("/approve", "OrderController@approve");
 
 	$router->set404(function () {
 		throw new RouterException("current route not found for this request method");
