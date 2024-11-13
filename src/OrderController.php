@@ -25,6 +25,7 @@ class OrderController extends Controller
 	}
 
 	/**
+	 * @return void
 	 * @throws EntityException
 	 * @throws ORMException
 	 * @throws ParametersException
@@ -32,22 +33,35 @@ class OrderController extends Controller
 	#[NoReturn] public function book(): void
 	{
 		parent::validateData($this->data, [
-			"eventId" => "numeric",
-			"eventDate" => "date:Y-m-d H:i:s",
-			"ticketAdultPrice" => "required|numeric",
-			"ticketAdultQuantity" => "required|numeric",
-			"ticketKidPrice" => "required|numeric",
-			"ticketKidQuantity" => "required|numeric",
-			"barcode" => "required|numeric",
+			/* тут используются данные, пришедшие из запроса к API, согласно ТЗ, они вырезаны и замоканы
+			"eventId" => "required|numeric",
+			"eventDate" => "required|date:Y-m-d H:i:s",
+			"ticketsPrices" => "required|array",
+			"ticketsQuantities" => "required|array",
+			*/
+			"barcode" => "required|array",
 		]);
 
 		$this->orderService->book(
-			1,
-			date("Y-m-d H:i:s"),
-			$this->data["ticketAdultPrice"],
-			$this->data["ticketAdultQuantity"],
-			$this->data["ticketKidPrice"],
-			$this->data["ticketKidQuantity"],
+			/*
+			$this->data["eventId"],
+			$this->data["eventDate"],
+			$this->data["ticketsPrices"], $this->data["ticketsQuantities"],
+			*/
+			rand(),
+			date("Y-m-d H:i:s", rand()),
+			[
+				"kid" => rand(100, 10000),
+				"adult" => rand(100, 10000),
+				"benefit" => rand(100, 10000),
+				"group" => rand(100, 10000)
+			],
+			[
+				"kid" => rand(1, 50),
+				"adult" => rand(1, 50),
+				"benefit" => rand(1, 50),
+				"group" => rand(1, 50)
+			],
 			$this->data["barcode"]
 		);
 
