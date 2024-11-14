@@ -37,7 +37,15 @@ class OrderController extends Controller
 			"eventId" => "required|numeric",
 			"eventDate" => "required|date:Y-m-d H:i:s",
 			"ticketsPrices" => "required|array",
+   			"ticketsPrices.kid" => "required|numeric",
+         		"ticketsPrices.adult" => "required|numeric",
+	   		"ticketsPrices.benefit" => "required|numeric",
+         		"ticketsPrices.group" => "required|numeric",
 			"ticketsQuantities" => "required|array",
+      			"ticketsQuantity.kid" => "required|numeric",
+         		"ticketsQuantity.adult" => "required|numeric",
+	   		"ticketsQuantity.benefit" => "required|numeric",
+         		"ticketsQuantity.group" => "required|numeric",
 			*/
 			"barcode" => "required|array",
 		]);
