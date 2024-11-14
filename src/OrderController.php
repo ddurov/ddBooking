@@ -54,11 +54,23 @@ class OrderController extends Controller
 			/*
 			$this->data["eventId"],
 			$this->data["eventDate"],
-			$this->data["ticketsPrices"], $this->data["ticketsQuantities"],
+   			[
+				"kid" => $this->data["ticketsPrices"]["kid"],
+				"adult" => $this->data["ticketsPrices"]["adult"],
+				"benefit" => $this->data["ticketsPrices"]["benefit"],
+				"group" => $this->data["ticketsPrices"]["group"]
+			],
+			[
+				"kid" => $this->data["ticketsQualities"]["kid"],
+				"adult" => $this->data["ticketsQualities"]["adult"],
+				"benefit" => $this->data["ticketsQualities"]["benefit"],
+				"group" => $this->data["ticketsQualities"]["group"]
+			]
 			*/
 			rand(),
 			date("Y-m-d H:i:s", rand()),
 			[
+			$this->data["ticketsPrices"]["kid"]
 				"kid" => rand(100, 10000),
 				"adult" => rand(100, 10000),
 				"benefit" => rand(100, 10000),
